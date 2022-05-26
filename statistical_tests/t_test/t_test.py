@@ -36,12 +36,3 @@ class TTest:
         p_value = (1 - t.cdf(abs(t_stat), degrees_freedom)) * 2
 
         return t_stat, p_value, degrees_freedom, critical_value
-
-
-sample_1 = np.random.normal(1, 0.2, 200)
-sample_2 = np.random.normal(1.05, 0.2, 200)
-
-t_stat, p_value, degrees_freedom, critical_value = TTest(
-    alpha=0.05).compute_t(sample_1, sample_2)
-
-print(p_value)
