@@ -45,6 +45,3 @@ print(
     f'The mean difference between the samples is {mean_diff} '
     f'and the p-value is {p_value}'
 )
-
-print(t_stat)
-print(stats.ttest_rel(sample_1, sample_2))
