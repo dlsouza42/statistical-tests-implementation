@@ -1,3 +1,5 @@
+import scipy.stats as stats
+from scipy import stats
 from t_test import TTest
 import numpy as np
 from statistics import mean
@@ -31,3 +33,18 @@ print(
     f'The mean difference between the samples is {mean_diff} '
     f'and the p-value is {p_value}'
 )
+
+# Paired t-test
+
+t_stat, p_value, degrees_freedom, critical_value = TTest(
+    alpha=0.05).paired_t_test(sample_1, sample_2)
+
+mean_diff = mean(sample_1) - mean(sample_2)
+
+print(
+    f'The mean difference between the samples is {mean_diff} '
+    f'and the p-value is {p_value}'
+)
+
+print(t_stat)
+print(stats.ttest_rel(sample_1, sample_2))
