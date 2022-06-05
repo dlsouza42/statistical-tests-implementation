@@ -8,7 +8,7 @@ import numpy as np
 class TTest:
 
     """
-    A class to apply different kinds 
+    A class to apply different kinds
     of t-tests
 
     ...
@@ -33,7 +33,6 @@ class TTest:
         self._validate_alpha(alpha)
 
     def _validate_alpha(self, alpha):
-
         """
         Validate the alpha parameter
 
@@ -56,7 +55,6 @@ class TTest:
             )
 
     def one_sample_t_test(self, sample, mean_value):
-
         """
         Apply one sample t-test
 
@@ -65,7 +63,7 @@ class TTest:
         sample : array_like
             The sample that will be tested
         mean:value: float
-            The mean value that will be used to 
+            The mean value that will be used to
             compare with the sample mean
 
         Returns
@@ -94,7 +92,6 @@ class TTest:
         return t_stat, p_value, degrees_freedom, critical_value
 
     def independent_t_test(self, sample_1, sample_2):
-
         """
         Apply independent t-test
 
@@ -124,6 +121,52 @@ class TTest:
         t_stat = (mean_1 - mean_2) / std_error_dif
 
         degrees_freedom = n1 + n2 - 2
+        critical_value = t.ppf(1.0 - self.alpha, degrees_freedom)
+
+        # calculate the p-value
+        p_value = (1 - t.cdf(abs(t_stat), degrees_freedom)) * 2
+
+        return t_stat, p_value, degrees_freedom, critical_value
+
+    def paired_t_test(self, sample_1, sample_2):
+        """
+        Apply paired t-test
+
+        Parameters
+        ----------
+        sample_1 : array_like
+            The first sample that will be tested
+        sample_2 : array_like
+            The second sample that will be tested
+
+        Returns
+        ----------
+        t_stat: Float
+            the t statistics calculated
+        p_value: Float
+            the p-value calculated
+        degrees_freedom: Integer
+            the degrees of freedom of the sample
+        critical_value:
+            the critical value estimated based on alpha
+        """
+
+        n1, n2 = len(sample_1), len(sample_2)
+
+        if n1 != n2:
+
+            raise ValueError(
+                "Number of observations in both samples should be the same"
+            )
+
+        difference = [
+            sample_1[x] - sample_2[x] for x in range(0, n1)
+        ]
+        mean_difference = mean(difference)
+        std_difference = stdev(difference)
+        t_stat = mean_difference/(std_difference/(sqrt(n1)))
+
+        degrees_freedom = n1 - 1
         critical_value = t.ppf(1.0 - self.alpha, degrees_freedom)
 
         # calculate the p-value
